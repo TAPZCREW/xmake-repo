@@ -10,6 +10,7 @@ package("cppfront")
     on_install(function(package)
         io.writefile("xmake.lua", [[
             target("cppfront")
+                set_languages("cxxlatest", "clatest")
                 set_kind("binary")
                 add_files("source/*.cpp")
                 add_headerfiles("source/*.h")
