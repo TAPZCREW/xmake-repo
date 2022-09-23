@@ -6,6 +6,7 @@ package("cppfront")
     add_urls("https://github.com/hsutter/cppfront.git")
 
     add_versions("2022.09.17", "8140ab920a38e9cc66d1862c9b823a98a9f25e3b")
+    add_versions("2022.09.23", "5b100f62aa18b4af6306aa24385c2369d75e0c36")
 
     on_install(function(package)
         io.writefile("xmake.lua", [[
