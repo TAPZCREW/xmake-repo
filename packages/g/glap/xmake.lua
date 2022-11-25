@@ -2,8 +2,9 @@ package("glap")
     set_homepage("http://glew.sourceforge.net/")
     set_description("A cross-platform open-source C/C++ extension loading library.")
 
-    set_urls("https://github.com/glcraft/glap/archive/refs/tags/v$(version).zip")
-    add_versions("2.0.0", "833c04fb4f2f722751f9122220c8c6e58cf739de3aa9a42734f9d3a54a9d7cde")
+    add_urls("https://github.com/glcraft/glap.git")
+    add_versions("2.0.0", "d336c8b7ae23fbf059480197078c9f0303ef5b14")
+    add_versions("2.0.1", "4b80020be6e29e508d805f475a06b9bedbe7b97a")
     add_configs("use_tl_expected", {description = "Use tl::expected instead of std::expected", default = true, type = "boolean"})
     add_configs("use_fmt", {description = "Use fmt library instead of std format library", default = true, type = "boolean"})
 
