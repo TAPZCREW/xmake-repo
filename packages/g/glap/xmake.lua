@@ -20,9 +20,7 @@ package("glap")
     on_install(function (package)
         local configs = {}
         for _, dep in ipairs({"tl_expected", "fmt"}) do
-            -- if package:config("use_" .. dep) then
-                configs["use_" .. dep] = true
-            -- end
+            configs["use_" .. dep]  = package:config("use_" .. dep) ~= nil
         end
         if package:config("shared") then
             configs.kind = "shared"
