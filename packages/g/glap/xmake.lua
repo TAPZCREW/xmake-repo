@@ -1,4 +1,4 @@
-package("glap_")
+package("glap")
     set_homepage("http://glew.sourceforge.net/")
     set_description("A cross-platform open-source C/C++ extension loading library.")
 
