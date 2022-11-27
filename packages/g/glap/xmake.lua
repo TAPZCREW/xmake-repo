@@ -1,6 +1,7 @@
 package("glap")
     set_homepage("http://glew.sourceforge.net/")
     set_description("A cross-platform open-source C/C++ extension loading library.")
+    set_license("MIT")
 
     add_urls("https://github.com/glcraft/glap.git")
     add_versions("2.0.0", "d336c8b7ae23fbf059480197078c9f0303ef5b14")
