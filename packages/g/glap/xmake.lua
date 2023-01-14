@@ -32,6 +32,12 @@ package("glap")
     end)
 
     on_test(function (package)
+        local language = "cxx20"
+
+        if not has_config("use_tl_expected") then
+            language = "cxx23"
+        end
+
         assert(package:check_cxxsnippets({test = [[
             using command_t = glap::model::Command<glap::Names<"command">>;
             using program_t = glap::model::Program<"myprogram", glap::model::DefaultCommand::None, command_t>;
@@ -39,5 +45,5 @@ package("glap")
                 using namespace std::literals;
                 auto result = glap::parser<program_t>(std::array{"pyprogram"sv});
             }
-        ]]}, {configs = {languages = "c++20"}, includes = {"glap/glap.h", "array", "string_view"}}))
+        ]]}, {configs = {languages = language}, includes = {"glap/glap.h", "array", "string_view"}}))
     end)
