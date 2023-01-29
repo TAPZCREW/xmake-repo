@@ -1,7 +1,9 @@
 package("mmg")
     set_homepage("https://gitlab.com/Arthapz/stormkit")
 
-    set_sourcedir("/home/gly/Projets/glap/make_my_glap")
+    on_load(function(package)
+        package:set("sourcedir",os.getenv("PROJECTS") .. "/glap/make_my_glap")
+    end)
     on_install(function(package)
         local configs = {
             kind = package:config("shared") and "shared" or "static",

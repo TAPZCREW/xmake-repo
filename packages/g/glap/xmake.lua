@@ -7,11 +7,12 @@ package("glap")
     -- add_versions("2.0.0", "d336c8b7ae23fbf059480197078c9f0303ef5b14")
     -- add_versions("2.0.1", "4b80020be6e29e508d805f475a06b9bedbe7b97a")
     -- add_versions("2.1", "c44f019c0f7e283540f2fe2465398542a5db4780")
-    set_sourcedir("/home/gly/Projets/glap")
+    
     add_configs("use_tl_expected", {description = "Use tl::expected instead of std::expected", default = true, type = "boolean"})
     add_configs("use_fmt", {description = "Use fmt library instead of std format library", default = true, type = "boolean"})
 
     on_load(function (package)
+        package:set("sourcedir",os.getenv("PROJECTS") .. "/glap")
         for _, dep in ipairs({"tl_expected", "fmt"}) do
             if package:config("use_" .. dep) then 
                 package:add("deps", dep)
