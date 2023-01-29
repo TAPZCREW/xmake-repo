@@ -1,6 +1,8 @@
 package("mmg")
     set_homepage("https://gitlab.com/Arthapz/stormkit")
 
+    add_deps("glap")
+
     on_load(function(package)
         package:set("sourcedir",os.getenv("PROJECTS") .. "/glap/make_my_glap")
     end)
