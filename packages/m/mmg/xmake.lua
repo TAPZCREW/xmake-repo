@@ -4,7 +4,7 @@ package("mmg")
     add_deps("glap")
 
     on_load(function(package)
-        package:set("sourcedir",os.getenv("PROJECTS") .. "/glap/make_my_glap")
+        package:set("sourcedir", path.absolute("../../../../make-my-glap", os.scriptdir()))
     end)
     on_install(function(package)
         local configs = {

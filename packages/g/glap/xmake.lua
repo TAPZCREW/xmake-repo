@@ -12,7 +12,7 @@ package("glap")
     add_configs("use_fmt", {description = "Use fmt library instead of std format library", default = true, type = "boolean"})
 
     on_load(function (package)
-        package:set("sourcedir",os.getenv("PROJECTS") .. "/glap")
+        package:set("sourcedir", path.absolute("../../../../glap", os.scriptdir()))
         for _, dep in ipairs({"tl_expected", "fmt"}) do
             if package:config("use_" .. dep) then 
                 package:add("deps", dep)
