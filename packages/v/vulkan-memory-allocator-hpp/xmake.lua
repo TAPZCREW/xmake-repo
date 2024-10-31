@@ -1,5 +1,5 @@
 package("vulkan-memory-allocator-hpp", function()
-    set_kind("library", { headeronly = true })
+    set_kind("library", { moduleonly = true })
     set_homepage("https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/")
     set_description("C++ bindings for VulkanMemoryAllocator.")
     set_license("CC0")

@@ -2,6 +2,7 @@ package("stormkit", function()
     set_homepage("https://gitlab.com/Arthapz/stormkit")
 
     set_urls("https://github.com/TapzCrew/stormkit.git")
+    set_kind("library")
 
     add_components("core", { default = true, readyonly = true })
     add_components("main", { default = true, readyonly = true })
@@ -26,21 +27,24 @@ package("stormkit", function()
     add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
     local components = {
-        core = { external_deps = { "glm", "frozen", "unordered_dense", "magic_enum", "tl_function_ref" } },
-        main = { deps = "core" },
-        log = { deps = "core" },
-        wsi = { deps = "core" },
-        entities = { deps = "core" },
-        image = { deps = "core", external_deps = { "gli", "libpng", "libjpeg" } },
+        core = { public_deps = { "glm", "frozen", "unordered_dense", "magic_enum", "tl_function_ref" } },
+        main = { public_deps = "core" },
+        log = { public_deps = "core" },
+        wsi = { public_deps = "core" },
+        entities = { public_deps = "core" },
+        image = { public_deps = "core", private_deps = { "gli", "libpng", "libjpeg" } },
         gpu = {
-            deps = { "core", "log", "wsi", "image" },
-            external_deps = {
+            public_deps = {
+                "core",
+                "log",
+                "wsi",
+                "image",
                 "vulkan-headers >= v1.3.297",
                 "vulkan-memory-allocator >= 3.1.0",
                 "vulkan-memory-allocator-hpp",
             },
         },
-        engine = { deps = { "core", "log", "wsi", "entities", "image", "gpu" } },
+        engine = { public_deps = { "core", "log", "wsi", "entities", "image", "gpu" } },
     }
 
     for name, _component in pairs(components) do
@@ -49,8 +53,8 @@ package("stormkit", function()
 
             component:add("link", "stormkit-" .. name .. suffix)
 
-            if _component.deps then component:add("deps", table.unwrap(_component.deps)) end
-            if _component.external_deps then component:add("deps", table.unwrap(_component.external_deps)) end
+            if _component.public_deps then component:add("deps", table.unwrap(_component.public_deps), {public = true}) end
+            if _component.private_deps then component:add("deps", table.unwrap(_component.private_deps)) end
         end)
     end
 
