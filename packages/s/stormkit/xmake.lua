@@ -1,71 +1,92 @@
-package("stormkit")
-    set_homepage("https://gitlab.com/Arthapz/stormkit")
+package("stormkit", function()
+	set_homepage("https://gitlab.com/Arthapz/stormkit")
 
-    set_urls("https://github.com/TapzCrew/stormkit.git")
-    add_versions("01-11-2023", "modulify")
+	set_urls("https://github.com/TapzCrew/stormkit.git")
 
-    add_components("core", {default = true})
+	add_components("core", { default = true, readyonly = true })
+	add_components("main", { default = true, readyonly = true })
+	add_components("log", { default = false })
+	add_components("wsi", { default = false })
+	add_components("entities", { default = false })
+	add_components("image", { default = false })
+	add_components("gpu", { default = false })
+	add_components("engine", { default = false })
 
-    add_configs("use_modules", {description = "Build with C++23 module support", default = false, type = "boolean"})
-    add_configs("enable_assert", {description = "Enable assertions", default = true, type = "boolean"})
+	add_configs("core", { description = "Enable core module", default = true, type = "boolean", readyonly = true })
+	add_configs("assertion", { description = "Enable assertions", default = true, type = "boolean" })
 
-    local components = {
-        log = {},
-        image = { deps = {"gli", "libpng", "libjpeg"} },
-        entities = {},
-    }
+	add_configs("main", { description = "Build main module", default = true, type = "boolean", readyonly = true })
+	add_configs("log", { description = "Build log module", default = true, type = "boolean" })
+	add_configs("wsi", { description = "Build wsi module", default = true, type = "boolean" })
+	add_configs("entities", { description = "Build entities module", default = true, type = "boolean" })
+	add_configs("image", { description = "Build image module", default = true, type = "boolean" })
+	add_configs("gpu", { description = "Build gpu module", default = true, type = "boolean" })
+	add_configs("engine", { description = "Build engine module", default = false, type = "boolean" })
 
-    for name, _component in pairs(components) do
-        add_configs("enable_" .. name, { description = "Enable " .. name .. " module", default = false, type = "boolean"})
+	add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
-        on_component(name, function(package, component)
-            local suffix = package:is_debug() and "-d" or ""
+	local components = {
+		core = { external_deps = { "glm", "frozen", "unordered_dense", "magic_enum", "tl_function_ref" } },
+		main = { deps = "core" },
+		log = { deps = "core" },
+		wsi = { deps = "core" },
+		entities = { deps = "core" },
+		image = { deps = "core", external_deps = { "gli", "libpng", "libjpeg" } },
+		gpu = {
+			deps = { "core", "log", "wsi", "image" },
+			external_deps = {
+				"vulkan-headers >= v1.3.297",
+				"vulkan-memory-allocator >= 3.1.0",
+				"vulkan-memory-allocator-hpp",
+			},
+		},
+		engine = { deps = { "core", "log", "wsi", "entities", "image", "gpu" } },
+	}
 
-            component:add("link", "stormkit-" .. name .. suffix)
+	for name, _component in pairs(components) do
+		on_component(name, function(package, component)
+			local suffix = package:is_debug() and "-d" or ""
 
-            component:add("deps", "core")
-            if _component.deps then
-                component:add("deps", table.unwrap(_component.deps))
-            end
-        end)
-    end
+			component:add("link", "stormkit-" .. name .. suffix)
 
-    on_load(function(package)
-        if package:config("enable_assert") then
-            package:add("defines", "STORMKIT_ASSERT=1")
-        else
-            package:add("defines", "STORMKIT_ASSERT=0")
-        end
+			if _component.deps then
+				component:add("deps", table.unwrap(_component.deps))
+			end
+			if _component.external_deps then
+				component:add("deps", table.unwrap(_component.external_deps))
+			end
+		end)
+	end
 
-        if not package:config("shared") then
-            package:add("defines", "STORMKIT_STATIC")
-        end
+	on_load(function(package)
+		if package:config("assertions") then
+			package:add("defines", "STORMKIT_ASSERT=1")
+		else
+			package:add("defines", "STORMKIT_ASSERT=0")
+		end
 
-        if not package:config("use_modules") then
-            package:add("defines", "STORMKIT_NO_MODULES")
-        end
-    end)
+		if not package:config("shared") then
+			package:add("defines", "STORMKIT_STATIC")
+		end
+	end)
 
-    on_install(function(package)
-        local configs = {
-            kind = package:config("shared") and "shared" or "static",
-            mode = package:is_debug() and "debug" or "release",
-            use_modules = package:config("use_modules") or false,
-            use_cpp23_msvc_import = package:config("use_modules"),
-            enable_applications = false,
-            enable_entities = package:config("enable_entities"),
-            enable_tests = false,
-            unity_build = false,
-            enable_wsi_wayland = false,
-            enable_log = package:config("enable_log"),
-            enable_wsi_x11 = false,
-            enable_engine = false,
-            enable_examples = false,
-            enable_image = package:config("enable_image"),
-            enable_wsi = false,
-            enable_gpu = false,
-            enable_pch = true
-        }
+	on_install(function(package)
+		local configs = {
+			kind = package:config("shared") and "shared" or "static",
+			mode = package:is_debug() and "debug" or "release",
 
-        import("package.tools.xmake").install(package, configs)
-    end)
+			main = package:config("main"),
+			log = package:config("log"),
+			wsi = package:config("wsi"),
+			entities = package:config("entities"),
+			image = package:config("image"),
+			gpu = package:config("gpu"),
+			engine = package:config("engine"),
+
+			examples = package:config("examples"),
+		}
+
+		import("package.tools.xmake").install(package, configs)
+	end)
+end)
+
