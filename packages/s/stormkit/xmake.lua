@@ -27,34 +27,38 @@ package("stormkit", function()
     add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
     local components = {
-        core = { public_deps = { "glm", "frozen", "unordered_dense", "magic_enum", "tl_function_ref" } },
-        main = { public_deps = "core" },
-        log = { public_deps = "core" },
-        wsi = { public_deps = "core" },
-        entities = { public_deps = "core" },
-        image = { public_deps = "core", private_deps = { "gli", "libpng", "libjpeg" } },
+        core = { package_deps = { "glm", "frozen", "unordered_dense", "magic_enum", "tl_function_ref" } },
+        main = { deps = "core" },
+        log = { deps = "core" },
+        wsi = { deps = "core" },
+        entities = { deps = "core" },
+        image = { deps = "core", package_deps = { "gli", "libpng", "libjpeg" }, links = { "gli", "libpng", "libjpeg" } },
         gpu = {
-            public_deps = {
+            deps = {
                 "core",
                 "log",
                 "wsi",
                 "image",
-                "vulkan-headers >= v1.3.297",
-                "vulkan-memory-allocator >= 3.1.0",
+            },
+            package_deps = {
+                "vulkan-headerst ",
+                "vulkan-memory-allocator >=3.1.0",
                 "vulkan-memory-allocator-hpp",
             },
         },
-        engine = { public_deps = { "core", "log", "wsi", "entities", "image", "gpu" } },
+        engine = { deps = { "core", "log", "wsi", "entities", "image", "gpu" } },
     }
 
     for name, _component in pairs(components) do
         on_component(name, function(package, component)
             local suffix = package:is_debug() and "-d" or ""
 
-            component:add("link", "stormkit-" .. name .. suffix)
+            component:add("links", "stormkit-" .. name .. suffix)
 
-            if _component.public_deps then component:add("deps", table.unwrap(_component.public_deps), {public = true}) end
-            if _component.private_deps then component:add("deps", table.unwrap(_component.private_deps)) end
+            if _component.deps then component:add("deps", table.unwrap(_component.deps)) end
+            if _component.links and not package:config("shared") then
+                component:add("links", table.unwrap(_component.links))
+            end
         end)
     end
 
@@ -66,6 +70,11 @@ package("stormkit", function()
         end
 
         if not package:config("shared") then package:add("defines", "STORMKIT_STATIC") end
+        for name, _component in pairs(components) do
+            if package:config(name) and _component.package_deps then
+                package:add("deps", table.unwrap(_component.package_deps), { modules = true })
+            end
+        end
     end)
 
     on_install(function(package)
