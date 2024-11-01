@@ -63,10 +63,6 @@ package("stormkit", function()
     end
 
     on_load(function(package)
-        if not package:config("debug") then
-            package:add("defines", "STORMKIT_ASSERT=0")
-        end
-
         if not package:config("shared") then package:add("defines", "STORMKIT_STATIC") end
         for name, _component in pairs(components) do
             if package:config(name) and _component.package_deps then
