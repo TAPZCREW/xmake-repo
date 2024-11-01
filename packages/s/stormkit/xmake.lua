@@ -63,9 +63,7 @@ package("stormkit", function()
     end
 
     on_load(function(package)
-        if package:config("assertions") then
-            package:add("defines", "STORMKIT_ASSERT=1")
-        else
+        if not package:config("debug") then
             package:add("defines", "STORMKIT_ASSERT=0")
         end
 
