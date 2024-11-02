@@ -5,8 +5,8 @@ package("vulkan-memory-allocator-hpp", function()
     set_license("CC0")
 
     add_urls(
-        "https://github.com/YaaZ/VulkanMemoryAllocator-Hpp/archive/refs/tags/$(version).tar.gz",
-        "https://github.com/YaaZ/VulkanMemoryAllocator-Hpp.git"
+        "https://github.com/Arthapz/VulkanMemoryAllocator-Hpp/archive/refs/tags/$(version).tar.gz",
+        "https://github.com/Arthapz/VulkanMemoryAllocator-Hpp.git"
     )
 
     add_configs("modules", { description = "Build with C++20 modules support.", default = false, type = "boolean" })
@@ -15,7 +15,7 @@ package("vulkan-memory-allocator-hpp", function()
         { description = "Use vulkan-headers package instead of vulkan-hpp.", default = false, type = "boolean" }
     )
 
-    add_deps("vulkan-memory-allocator")
+    add_deps("vulkan-memory-allocator >=3.1.0")
 
     on_install("windows|x86", "windows|x64", "linux", "macosx", "mingw", "android", "iphoneos", function(package)
         if not package:config("modules") then
@@ -24,7 +24,7 @@ package("vulkan-memory-allocator-hpp", function()
             io.writefile(
                 "xmake.lua",
                 format([[
-                -- add_requires("vulkan-memory-allocator", "vulkan-header >= v1.3.297")
+                add_requires("vulkan-memory-allocator >=3.1.0", "vulkan-headers")
                 target("vulkan-memory-allocator-hpp")
                     set_kind("moduleonly")
                     set_languages("c++20")

@@ -41,9 +41,9 @@ package("stormkit", function()
                 "image",
             },
             package_deps = {
-                "vulkan-headerst ",
+                "vulkan-headers",
                 "vulkan-memory-allocator >=3.1.0",
-                "vulkan-memory-allocator-hpp",
+                "vulkan-memory-allocator-hpp support_vkhpp_module",
             },
         },
         engine = { deps = { "core", "log", "wsi", "entities", "image", "gpu" } },
