@@ -41,7 +41,6 @@ package("stormkit", function()
                 "image",
             },
             defines = {
-
                 "VK_NO_PROTOTYPES",
                 "VMA_DYNAMIC_VULKAN_FUNCTIONS=1",
                 "VMA_STATIC_VULKAN_FUNCTIONS=0",
