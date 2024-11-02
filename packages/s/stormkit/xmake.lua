@@ -40,6 +40,21 @@ package("stormkit", function()
                 "wsi",
                 "image",
             },
+            defines = {
+
+                "VK_NO_PROTOTYPES",
+                "VMA_DYNAMIC_VULKAN_FUNCTIONS=1",
+                "VMA_STATIC_VULKAN_FUNCTIONS=0",
+                "VULKAN_HPP_DISPATCH_LOADER_DYNAMIC=1",
+                "VULKAN_HPP_NO_STRUCT_CONSTRUCTORS",
+                "VULKAN_HPP_NO_UNION_CONSTRUCTORS",
+                "VULKAN_HPP_NO_EXCEPTIONS",
+                "VULKAN_HPP_NO_CONSTRUCTORS",
+                -- "VULKAN_HPP_NO_SMART_HANDLE",
+                "VULKAN_HPP_STD_MODULE=std.compat",
+                "VULKAN_HPP_ENABLE_STD_MODULE",
+                "VMA_HPP_ENABLE_VULKAN_HPP_MODULE",
+            },
             package_deps = {
                 "vulkan-headers",
                 "vulkan-memory-allocator >=3.1.0",
@@ -55,6 +70,7 @@ package("stormkit", function()
 
             component:add("links", "stormkit-" .. name .. suffix)
 
+            if _component.defines then component:add("defines", table.unwrap(_component.defines)) end
             if _component.deps then component:add("deps", table.unwrap(_component.deps)) end
             if _component.links and not package:config("shared") then
                 component:add("links", table.unwrap(_component.links))
