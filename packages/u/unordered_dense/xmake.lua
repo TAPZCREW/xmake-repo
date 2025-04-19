@@ -7,7 +7,7 @@ package("unordered_dense")
     add_configs("std_import", {description = "Build with C++23 std modules support.", default = false, type = "boolean"})
     add_configs("cpp", {description = "Build with C++23 std modules support.", default = "20", type = "string"})
 
-    add_versions("20250419", "82f820af48f5f4e9c5c37c754af4e13e8f8f98cd")
+    add_versions("20250419", "b45d4094c202f012385fd43b066df6df258c0700")
 
     on_load(function(package)
         local cpp = package:config("cpp")
