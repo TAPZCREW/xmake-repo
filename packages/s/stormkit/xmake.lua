@@ -55,9 +55,9 @@ package("stormkit", function()
                 "VMA_HPP_ENABLE_VULKAN_HPP_MODULE",
             },
             package_deps = {
-                "vulkan-headers",
-                "vulkan-memory-allocator >=3.1.0",
-                "vulkan-memory-allocator-hpp_ support_vkhpp_module",
+                "vulkan-headers v1.3.290",
+                "vulkan-memory-allocator 3.2.0",
+                "vulkan-memory-allocator-hpp_ 3.2.1",
             },
         },
         engine = { deps = { "core", "log", "wsi", "entities", "image", "gpu" } },
