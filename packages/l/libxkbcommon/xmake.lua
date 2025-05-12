@@ -13,7 +13,7 @@ package("libxkbcommon")
         add_extsources("apt::libxkbcommon-dev")
     end
 
-    add_configs("x11", {description = "Enable backend to X11 (default is false).", default = true, type = "boolean"})
+    add_configs("x11", {description = "Enable backend to X11 (default is false).", default = false, type = "boolean"})
     add_configs("wayland", {description = "Enable backend to X11 (default is true).", default = true, type = "boolean"})
     add_configs("tools", {description = "Enable xkbcommon binaries.", default = false, type = "boolean"})
 
@@ -45,13 +45,12 @@ package("libxkbcommon")
             format("-Denable-bash-completion=%s", package:config("tools")),
             format("-Denable-x11=%s", package:config("x11")),
             format("-Denable-wayland=%s", package:config("wayland")),
-            format("-Dbash-completion-path=%s", path.join(package:installdir(), "share", "bash-completion", "completions")),
-            "-Ddefault_library=" .. (package:config("shared") and "shared" or "static")
+            format("-Dbash-completion-path=%s", path.join(package:installdir(), "share", "bash-completion", "completions"))
         }
         local c_link_args = "-lm"
         -- fix undefined reference to XauGetBestAuthByAddr on linux
         if package:config("x11") then
-            for _, dep in ipairs({"libxau", "libxdmcp"}) do
+            for _, dep in table.ipair(package:deps()) do
                 local libxau = package:dep(dep)
                 local fetchinfo = libxau:fetch()
                 for _, linkdir in ipairs(fetchinfo.linkdirs) do
