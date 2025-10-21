@@ -6,6 +6,8 @@ package("frozen", function()
 
     set_urls("https://github.com/Arthapz/frozen.git")
 
+    add_versions("20251021", "7b7ea282746ec6d9a23d27d42c1c7d27419f52c2")
+
     add_configs("modules", { default = false, type = "boolean" })
 
     on_install(function(package)
