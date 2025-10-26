@@ -7,6 +7,7 @@ package("unordered_dense", function()
 
     add_versions("20250419", "b45d4094c202f012385fd43b066df6df258c0700")
     add_versions("20251021", "b37bf4b303d6bb4a4b236726b819680d05636323")
+    add_versions("20251026", "f70d6986b06b853a1aaef9545c85e1b27231f75a")
 
     on_install(function(package)
         if not package:config("modules") then
