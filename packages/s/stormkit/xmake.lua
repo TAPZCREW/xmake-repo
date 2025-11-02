@@ -24,7 +24,7 @@ package("stormkit", function()
 
     add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
-    add_versions("20251102", "961981697dd5d48d61e3890ee2d0fde06df1ca05")
+    add_versions("20251102", "db479e8c916dbec739279cd7fab5db1b7b8acb41")
 
     local components = {
         core = {
