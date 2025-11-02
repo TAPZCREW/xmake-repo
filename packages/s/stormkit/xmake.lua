@@ -11,7 +11,6 @@ package("stormkit", function()
     add_components("entities", { default = false })
     add_components("image", { default = false })
     add_components("gpu", { default = false })
-    add_components("engine", { default = false })
 
     add_configs("core", { description = "Enable core module", default = true, type = "boolean", readyonly = true })
     add_configs("assertion", { description = "Enable assertions", default = true, type = "boolean" })
@@ -22,17 +21,21 @@ package("stormkit", function()
     add_configs("entities", { description = "Build entities module", default = true, type = "boolean" })
     add_configs("image", { description = "Build image module", default = true, type = "boolean" })
     add_configs("gpu", { description = "Build gpu module", default = true, type = "boolean" })
-    add_configs("engine", { description = "Build engine module", default = false, type = "boolean" })
 
     add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
+    add_versions("20251102", "961981697dd5d48d61e3890ee2d0fde06df1ca05")
+
     local components = {
-        core = { package_deps = { "glm", "frozen", "unordered_dense", "magic_enum", "tl_function_ref" } },
+        core = {
+            package_deps = { "frozen", "unordered_dense", "tl_function_ref" },
+            defines = { "ANKERL_UNORDERED_DENSE_STD_MODULE", "FROZEN_STD_MODULE" },
+        },
         main = { deps = "core" },
         log = { deps = "core" },
         wsi = { deps = "core" },
         entities = { deps = "core" },
-        image = { deps = "core", package_deps = { "gli", "libpng", "libjpeg" }, links = { "gli", "libpng", "libjpeg" } },
+        image = { deps = "core", package_deps = { "libktx", "libpng", "libjpeg" } },
         gpu = {
             deps = {
                 "core",
@@ -40,27 +43,14 @@ package("stormkit", function()
                 "wsi",
                 "image",
             },
-            defines = {
-                "VK_NO_PROTOTYPES",
-                "VMA_DYNAMIC_VULKAN_FUNCTIONS=1",
-                "VMA_STATIC_VULKAN_FUNCTIONS=0",
-                "VULKAN_HPP_DISPATCH_LOADER_DYNAMIC=1",
-                "VULKAN_HPP_NO_STRUCT_CONSTRUCTORS",
-                "VULKAN_HPP_NO_UNION_CONSTRUCTORS",
-                "VULKAN_HPP_NO_EXCEPTIONS",
-                "VULKAN_HPP_NO_CONSTRUCTORS",
-                -- "VULKAN_HPP_NO_SMART_HANDLE",
-                "VULKAN_HPP_STD_MODULE=std.compat",
-                "VULKAN_HPP_ENABLE_STD_MODULE",
-                "VMA_HPP_ENABLE_VULKAN_HPP_MODULE",
-            },
             package_deps = {
-                "vulkan-headers v1.3.290",
-                "vulkan-memory-allocator 3.2.0",
-                "vulkan-memory-allocator-hpp_ 3.2.1",
+                "vulkan-headers v1.4.309",
+                "vulkan-memory-allocator 3.2.1",
+            },
+            defines = {
+                "STORMKIT_GPU_VULKAN",
             },
         },
-        engine = { deps = { "core", "log", "wsi", "entities", "image", "gpu" } },
     }
 
     for name, _component in pairs(components) do
@@ -97,7 +87,6 @@ package("stormkit", function()
             entities = package:config("entities"),
             image = package:config("image"),
             gpu = package:config("gpu"),
-            engine = package:config("engine"),
 
             examples = package:config("examples"),
         }
