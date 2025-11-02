@@ -8,7 +8,7 @@ add_configs("std_import", { description = "Build with C++23 std modules support.
 add_configs("cpp", { description = "Build with C++23 std modules support.", default = "20", type = "string" })
 
 add_versions("20250419", "b45d4094c202f012385fd43b066df6df258c0700")
-add_versions("20251103", "7126e0eca0a95a0409a20b0e02532c23f23ae9b2")
+add_versions("20251104", "05e5a4d5f7d30b900a6287900bd9f34d6650f7f3")
 
 on_load(function(package)
     local cpp = package:config("cpp")
