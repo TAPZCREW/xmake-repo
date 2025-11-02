@@ -29,7 +29,7 @@ package("stormkit", function()
     local components = {
         core = {
             package_deps = { "frozen", "unordered_dense", "tl_function_ref" },
-            defines = { "ANKERL_UNORDERED_DENSE_STD_MODULE", "FROZEN_STD_MODULE" },
+            defines = { "ANKERL_UNORDERED_DENSE_STD_MODULE=1", "FROZEN_STD_MODULE=1" },
         },
         main = { deps = "core" },
         log = { deps = "core" },
