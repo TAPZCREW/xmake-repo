@@ -8,6 +8,8 @@ package("frozen", function()
 
     add_configs("modules", { default = false, type = "boolean" })
 
+    add_versions("20251102", "7b7ea282746ec6d9a23d27d42c1c7d27419f52c2")
+
     on_install(function(package)
         local configs = {
             modules = package:config("modules"),
