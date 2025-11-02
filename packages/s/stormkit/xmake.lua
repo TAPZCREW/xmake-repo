@@ -44,6 +44,7 @@ package("stormkit", function()
                 "image",
             },
             package_deps = {
+                "volk",
                 "vulkan-headers v1.4.309",
                 "vulkan-memory-allocator 3.2.1",
             },
