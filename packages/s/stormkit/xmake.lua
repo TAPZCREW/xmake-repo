@@ -26,7 +26,7 @@ package("stormkit", function()
 
     add_versions("20251102", "db479e8c916dbec739279cd7fab5db1b7b8acb41")
     add_versions("20251105", "85f6d4997bed98607ffc644c0cb278e4cb4ce8db")
-    add_versions("20251106", "b252a30dadb4f965e2b901f0d28c960b600fc7d4")
+    add_versions("20251106", "4ef38e01346e794983c5f5fc11f0b5b9231d8e0c")
 
     local components = {
         core = {
