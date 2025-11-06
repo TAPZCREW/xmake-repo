@@ -48,7 +48,7 @@ package("stormkit", function()
             package_deps = {
                 "volk",
                 "vulkan-headers v1.4.309",
-                "vulkan-memory-allocator 3.2.1",
+                "vulkan-memory-allocator v3.3.0",
             },
             defines = {
                 "STORMKIT_GPU_VULKAN",
