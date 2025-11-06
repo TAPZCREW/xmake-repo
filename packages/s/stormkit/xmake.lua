@@ -15,7 +15,6 @@ package("stormkit", function()
     add_configs("core", { description = "Enable core module", default = true, type = "boolean", readyonly = true })
     add_configs("assertion", { description = "Enable assertions", default = true, type = "boolean" })
 
-    add_configs("main", { description = "Build main module", default = true, type = "boolean", readyonly = true })
     add_configs("log", { description = "Build log module", default = true, type = "boolean" })
     add_configs("wsi", { description = "Build wsi module", default = true, type = "boolean" })
     add_configs("entities", { description = "Build entities module", default = true, type = "boolean" })
@@ -84,7 +83,6 @@ package("stormkit", function()
             kind = package:config("shared") and "shared" or "static",
             mode = package:is_debug() and "debug" or "release",
 
-            main = package:config("main"),
             log = package:config("log"),
             wsi = package:config("wsi"),
             entities = package:config("entities"),
