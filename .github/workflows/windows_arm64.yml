@@ -38,4 +38,4 @@ jobs:
       - name: Tests
         run: |
           xmake --version
-          xmake l ./scripts/test.lua -vD -a ${{ matrix.arch }} -k ${{ matrix.kind }} --runtimes=${{ matrix.runtimes }} --linkjobs=2
+          xmake l ./scripts/test.lua -vD -a ${{ matrix.arch }} -k ${{ matrix.kind }} --toolchain=llvm --runtimes=c++_shared --linkjobs=2
