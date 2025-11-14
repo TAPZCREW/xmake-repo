@@ -205,7 +205,6 @@ function get_modified_packages()
             end
         elseif line:startswith("+") and line:find("add_versions") then
             local version = line:match('add_versions%("(.-)"')
-            print("AAAAAAAAA", line, version)
             if version:find(":", 1, true) then version = version:split(":")[2] end
             if #packages > 0 and version then
                 local lastpackage = packages[#packages]
