@@ -46,6 +46,7 @@ package("stormkit", function()
                 "wsi",
                 "image",
             },
+
             package_deps = {
                 "volk",
                 "vulkan-headers v1.4.309",
