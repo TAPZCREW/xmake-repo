@@ -77,8 +77,8 @@ package("stormkit", function()
         },
         luau = {
             package_deps = {
-                "luau",
-                "luabridge3",
+                "luau master",
+                "luabridge3 master",
             },
             defines = {
                 "STORMKIT_LUA_BINDING",
