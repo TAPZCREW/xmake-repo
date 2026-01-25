@@ -21,6 +21,7 @@ package("stormkit", function()
     add_configs("entities", { description = "Build entities module", default = true, type = "boolean" })
     add_configs("image", { description = "Build image module", default = true, type = "boolean" })
     add_configs("gpu", { description = "Build gpu module", default = true, type = "boolean" })
+    add_configs("luau", { description = "Build luau module", default = true, type = "boolean" })
 
     add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
