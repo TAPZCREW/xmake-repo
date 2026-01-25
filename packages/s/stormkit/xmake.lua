@@ -75,6 +75,9 @@ package("stormkit", function()
                 "luau",
                 "luabridge3",
             },
+            defines = {
+                "STORMKIT_LUA_BINDING",
+            },
         },
     }
 
