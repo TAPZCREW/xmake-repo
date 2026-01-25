@@ -85,8 +85,9 @@ package("stormkit", function()
     for name, _component in pairs(components) do
         on_component(name, function(package, component)
             local suffix = package:is_debug() and "-d" or ""
+            local ver = tonumber(package:version_str())
 
-            if tonumber(package:version_str()) >= 20251106 then
+            if ver and ver >= 20251106 or package:version_str() == "master" or package:version_str() == "develop" then
                 component:add("links", name .. suffix)
             else
                 component:add("links", "stormkit-" .. name .. suffix)
