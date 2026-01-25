@@ -11,6 +11,7 @@ package("stormkit", function()
     add_components("entities", { default = false })
     add_components("image", { default = false })
     add_components("gpu", { default = false })
+    add_components("luau", { default = false })
 
     add_configs("core", { description = "Enable core module", default = true, type = "boolean", readyonly = true })
     add_configs("assertion", { description = "Enable assertions", default = true, type = "boolean" })
@@ -36,7 +37,20 @@ package("stormkit", function()
         },
         main = { deps = "core" },
         log = { deps = "core" },
-        wsi = { deps = "core" },
+        wsi = {
+            deps = "core",
+            package_deps = {
+                "libxcb",
+                "xcb-util-keysyms",
+                "xcb-util",
+                "xcb-util-image",
+                "xcb-util-wm",
+                "xcb-util-errors",
+                "wayland",
+                "wayland-protocols",
+                "libxkbcommon",
+            },
+        },
         entities = { deps = "core" },
         image = { deps = "core", package_deps = { "libktx", "libpng", "libjpeg" } },
         gpu = {
@@ -49,11 +63,17 @@ package("stormkit", function()
 
             package_deps = {
                 "volk",
-                "vulkan-headers v1.4.309",
+                "vulkan-headers v1.4.335",
                 "vulkan-memory-allocator v3.3.0",
             },
             defines = {
                 "STORMKIT_GPU_VULKAN",
+            },
+        },
+        luau = {
+            package_deps = {
+                "luau",
+                "luabridge3",
             },
         },
     }
@@ -95,6 +115,7 @@ package("stormkit", function()
             entities = package:config("entities"),
             image = package:config("image"),
             gpu = package:config("gpu"),
+            luau = package:config("luau"),
 
             examples = package:config("examples"),
         }
