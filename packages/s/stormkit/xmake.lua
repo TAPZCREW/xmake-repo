@@ -87,7 +87,7 @@ package("stormkit", function()
             local suffix = package:is_debug() and "-d" or ""
             local ver = tonumber(package:version_str())
 
-            components:add("includedirs", "include")
+            component:add("includedirs", "include")
             if ver and ver >= 20251106 or package:version_str() == "main" or package:version_str() == "develop" then
                 component:add("links", name .. suffix)
             else
