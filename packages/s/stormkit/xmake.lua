@@ -44,7 +44,7 @@ package("stormkit", function()
         log = { deps = "core" },
         wsi = {
             deps = "core",
-            package_deps = {
+            package_deps = is_plat("linux") and {
                 "libxcb",
                 "xcb-util-keysyms",
                 "xcb-util",
