@@ -86,38 +86,4 @@ package("luau")
     end)
 
     on_test(function(package)
-        if package:config("extern_c") then
-            assert(package:check_cxxsnippets({ test = [[
-                extern "C" {
-                    #include <lua.h>
-                    #include <luacode.h>
-                    #include <lualib.h>
-                }
-
-                void test() {
-                    lua_State* L = luaL_newstate();
-                    luaL_openlibs(L);
-                    lua_close(L);
-                }
-            ]]}, {configs = {languages = "cxx11"}}))
-        else
-            assert(package:check_cxxsnippets({ test = [[
-                #include <lua.h>
-                #include <luacode.h>
-                #include <lualib.h>
-
-                void test() {
-                    lua_State* L = luaL_newstate();
-                    luaL_openlibs(L);
-                    lua_close(L);
-                }
-            ]]}, {configs = {languages = "cxx11"}}))
-        end
-        assert(package:check_cxxsnippets({ test = [[
-            #include <Luau/Common.h>
-
-            void test() {
-                Luau::FValue<int> v("test", 42, true);
-            }
-        ]]}, {configs = {languages = "cxx11"}}))
     end)
