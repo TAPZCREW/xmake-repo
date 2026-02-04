@@ -35,16 +35,83 @@ package("stormkit", function()
     add_includedirs("include")
     add_linkdirs("lib")
 
-    local components = {
-        core = {
-            package_deps = { "frozen", "unordered_dense", "tl_function_ref" },
-            defines = { "ANKERL_UNORDERED_DENSE_STD_MODULE=1", "FROZEN_STD_MODULE=1" },
-        },
-        main = { deps = "core" },
-        log = { deps = "core" },
-        wsi = {
-            deps = "core",
-            package_deps = is_plat("linux") and {
+    on_component("core", function(package, component)
+        component:add("defines", "ANKERL_UNORDERED_DENSE_STD_MODULE=1", "FROZEN_STD_MODULE=1")
+        package:add("deps", "frozen", {
+            system = false,
+            configs = {
+                modules = true,
+                std_import = true,
+                cpp = "latest",
+            },
+        })
+        package:add("deps", "unordered_dense", {
+            system = false,
+            configs = {
+                modules = true,
+                std_import = true,
+            },
+        })
+        package:add("deps", "tl_function_ref", {
+            system = false,
+            configs = {
+                modules = true,
+                std_import = true,
+            },
+        })
+    end)
+
+    on_component("main", "log", "entities", function(package, component) component:add("deps", "core") end)
+
+    on_component("luau", function(package, component)
+        component:add("deps", "core")
+        component:add("defines", "STORMKIT_LUA_BINDING")
+
+        package:add("deps", "luau", {
+            system = false,
+            version = "master",
+            configs = {
+                shared = false,
+                extern_c = true,
+                build_cli = false,
+            },
+        })
+        package:add("deps", "luabridge3", {
+            system = false,
+            version = "master",
+        })
+    end)
+
+    on_component("image", function(package, component)
+        component:add("deps", "core")
+
+        package:add("deps", "libktx", "libpng", "libjpeg")
+    end)
+
+    on_component("gpu", function(package, component)
+        component:add("deps", "core", "log", "wsi", "image")
+        component:add("defines", "STORMKIT_GPU_VULKAN")
+
+        package:add("deps", "volk", { version = "1.4.335" })
+        package:add("deps", "vulkan-headers", {
+            version = "1.4.335",
+            system = false,
+            configs = {
+                modules = false,
+            },
+        })
+        package:add("deps", "vulkan-memory-allocator", {
+            version = "v3.3.0",
+            system = false,
+        })
+    end)
+
+    on_component("gpu", function(package, component)
+        component:add("deps", "core")
+
+        if package:is_plat("linux") then
+            package:add(
+                "deps",
                 "libxcb",
                 "xcb-util-keysyms",
                 "xcb-util",
@@ -53,66 +120,13 @@ package("stormkit", function()
                 "xcb-util-errors",
                 "wayland",
                 "wayland-protocols",
-                "libxkbcommon",
-            },
-        },
-        entities = { deps = "core" },
-        image = { deps = "core", package_deps = { "libktx", "libpng", "libjpeg" } },
-        gpu = {
-            deps = {
-                "core",
-                "log",
-                "wsi",
-                "image",
-            },
-
-            package_deps = {
-                "volk",
-                "vulkan-headers v1.4.335",
-                "vulkan-memory-allocator v3.3.0",
-            },
-            defines = {
-                "STORMKIT_GPU_VULKAN",
-            },
-        },
-        luau = {
-            package_deps = {
-                "luau master",
-                "luabridge3 master",
-            },
-            defines = {
-                "STORMKIT_LUA_BINDING",
-            },
-        },
-    }
-
-    for name, _component in pairs(components) do
-        on_component(name, function(package, component)
-            local suffix = package:is_debug() and "-d" or ""
-            local ver = tonumber(package:version_str())
-
-            component:add("includedirs", "include")
-            if ver and ver >= 20251106 or package:version_str() == "main" or package:version_str() == "develop" then
-                component:add("links", name .. suffix)
-            else
-                component:add("links", "stormkit-" .. name .. suffix)
-            end
-
-            if _component.defines then component:add("defines", table.unwrap(_component.defines)) end
-            if _component.deps then component:add("deps", table.unwrap(_component.deps)) end
-            if _component.links and not package:config("shared") then
-                component:add("links", table.unwrap(_component.links))
-            end
-        end)
-    end
+                "libxkbcommon"
+            )
+        end
+    end)
 
     on_load(function(package)
         if not package:config("shared") then package:add("defines", "STORMKIT_STATIC") end
-        for name, _component in pairs(components) do
-            if package:config(name) and _component.package_deps then
-                package:add("deps", table.unwrap(_component.package_deps), { modules = true })
-            end
-        end
     end)
 
     on_install(function(package)
