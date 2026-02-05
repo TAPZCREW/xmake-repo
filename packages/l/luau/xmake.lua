@@ -62,6 +62,7 @@ on_install(function(package)
         { plain = true }
     )
     io.replace("VM/include/luaconf.h", [[#define LUAI_FUNC extern]], [[#define LUAI_FUNC LUA_API]], { plain = true })
+    io.replace("VM/include/luaconf.h", [[#define LUAI_DATA extern]], [[#define LUAI_DATA LUA_FUNC]], { plain = true })
 
     if package:is_plat("wasm") then
         import("package.tools.cmake").build(package, configs, { target = "Luau.Web", builddir = "build" })
