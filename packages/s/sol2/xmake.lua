@@ -1,0 +1,19 @@
+package("sol2", function()
+    set_kind("library", { headeronly = true })
+    set_homepage("https://github.com/ThePhD/sol2")
+    set_description("A C++ library binding to Lua.")
+    set_urls("https://github.com/NougatBitz/sol2.git")
+
+    -- add_patches(
+    --     ">=3.3.0",
+    --     path.join(os.scriptdir(), "patches", "3.3.0", "optional.patch"),
+    --     "8440f25e5dedc29229c3def85aa6f24e0eb165d4c390fd0e1312452a569a01a6"
+    -- )
+
+    add_deps("cmake")
+
+    on_install("!wasm", function(package)
+        local configs = {}
+        import("package.tools.cmake").install(package, configs)
+    end)
+end)
