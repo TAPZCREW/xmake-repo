@@ -13,7 +13,12 @@ package("sol2", function()
     add_deps("cmake")
 
     on_install("!wasm", function(package)
-        local configs = { "-DSOL2_TESTS_SINGLE=OFF" }
+        local configs = {
+            "-DSOL2_TESTS=OFF",
+            "-DSOL2_TESTS_SINGLE=OFF",
+            "-DSOL2_TESTS_INTEROP_EXAMPLES=OFF",
+            "-DSOL2_TESTS_DYNAMIC_LOADING_EXAMPLES=OFF",
+        }
         import("package.tools.cmake").install(package, configs)
     end)
 end)
