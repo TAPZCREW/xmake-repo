@@ -58,7 +58,7 @@ on_install(function(package)
     io.replace(
         "VM/include/luaconf.h",
         [[#define LUAI_FUNC __attribute__((visibility("hidden"))) extern]],
-        [[#define LUAI_FUNC LUA_API)]],
+        [[#define LUAI_FUNC LUA_API]],
         { plain = true }
     )
     io.replace("VM/include/luaconf.h", [[#define LUAI_FUNC extern]], [[#define LUAI_FUNC LUA_API]], { plain = true })
