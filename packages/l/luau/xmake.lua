@@ -55,14 +55,23 @@ on_install(function(package)
         )
     end
 
+    io.replace(
+        "VM/src/luaconf.h",
+        [[#define LUAI_FUNC __attribute__((visibility("hidden"))) extern]],
+        [[#define LUAI_FUNX extern "C" __declspec(dllexport)]],
+        { plain = true }
+    )
+    io.replace(
+        "VM/src/luaconf.h",
+        [[#define LUAI_FUNC extern]],
+        [[#define LUAI_FUNX extern "C" __declspec(dllexport)]],
+        { plain = true }
+    )
+
     if package:is_plat("wasm") then
         import("package.tools.cmake").build(package, configs, { target = "Luau.Web", builddir = "build" })
     else
-        import("package.tools.cmake").build(
-            package,
-            configs,
-            { builddir = "build", cxflags = { '-DLUAI_FUNC=extern "C" __declspec(dllexport)' } }
-        )
+        import("package.tools.cmake").build(package, configs, { builddir = "build" })
     end
 
     local cmake_file = io.readfile("CMakeLists.txt")
@@ -85,7 +94,7 @@ on_install(function(package)
         package:add("links", link)
     end
 
-    os.trycp("src/*.h", package:installdir("include"))
+    os.trycp("VM/src/*.h", package:installdir("include"))
     os.trycp("build/**.a", package:installdir("lib"))
     os.trycp("build/**.so", package:installdir("lib"))
     os.trycp("build/**.dylib", package:installdir("lib"))
