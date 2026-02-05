@@ -2,7 +2,7 @@ package("sol2", function()
     set_kind("library", { headeronly = true })
     set_homepage("https://github.com/ThePhD/sol2")
     set_description("A C++ library binding to Lua.")
-    set_urls("https://github.com/NougatBitz/sol2.git")
+    set_urls("https://github.com/NougatBitz/sol2.git", { branch = "develop" })
 
     -- add_patches(
     --     ">=3.3.0",
