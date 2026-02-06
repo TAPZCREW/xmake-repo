@@ -8,9 +8,6 @@ namespace("stormkit", function()
             local stormkit_components = target:values("stormkit.components") or {}
             local stormkit_components_set = hashset.from(stormkit_components)
 
-            if not target:kind() then target:set("kind", "$(kind)") end
-            target:set("languages", "cxxlatest", "clatest")
-
             -- core --
             target:add("packages", "frozen", "unordered_dense", "tl_function_ref")
 
