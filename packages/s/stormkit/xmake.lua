@@ -11,7 +11,7 @@ package("stormkit", function()
     add_components("entities", { default = false })
     add_components("image", { default = false })
     add_components("gpu", { default = false })
-    add_components("luau", { default = false })
+    add_components("lua", { default = false })
 
     add_configs("core", { description = "Enable core module", default = true, type = "boolean", readyonly = true })
     add_configs("assertion", { description = "Enable assertions", default = true, type = "boolean" })
@@ -21,7 +21,7 @@ package("stormkit", function()
     add_configs("entities", { description = "Build entities module", default = true, type = "boolean" })
     add_configs("image", { description = "Build image module", default = true, type = "boolean" })
     add_configs("gpu", { description = "Build gpu module", default = true, type = "boolean" })
-    add_configs("luau", { description = "Build luau module", default = true, type = "boolean" })
+    add_configs("lua", { description = "Build lua module", default = true, type = "boolean" })
 
     add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
@@ -63,7 +63,7 @@ package("stormkit", function()
 
     on_component("main", "log", "entities", function(package, component) component:add("deps", "core") end)
 
-    on_component("luau", function(package, component)
+    on_component("lua", function(package, component)
         component:add("deps", "core")
         component:add("defines", "STORMKIT_LUA_BINDING")
 
@@ -76,9 +76,9 @@ package("stormkit", function()
                 build_cli = false,
             },
         })
-        package:add("deps", "luabridge3", {
+        package:add("deps", "sol2", {
             system = false,
-            version = "master",
+            version = "develop",
         })
     end)
 
@@ -139,7 +139,7 @@ package("stormkit", function()
             entities = package:config("entities"),
             image = package:config("image"),
             gpu = package:config("gpu"),
-            luau = package:config("luau"),
+            lua = package:config("lua"),
 
             examples = package:config("examples"),
         }
