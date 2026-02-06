@@ -168,6 +168,9 @@ package("stormkit", function()
                 "wayland-protocols",
                 "libxkbcommon"
             )
+        elseif package:is_plat("windows") then
+            component:add("syslinks", "User32", "Shell32", "Gdi32", "Shcore", "Gdiplus")
+        elseif package:is_plat("macosx") then
         end
     end)
 
