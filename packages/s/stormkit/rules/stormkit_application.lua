@@ -1,6 +1,6 @@
 namespace("stormkit", function()
     rule("application", function()
-        add_deps("@flags")
+        add_deps("@stormkit::flags")
 
         on_config(function(target)
             import("core.base.hashset")
