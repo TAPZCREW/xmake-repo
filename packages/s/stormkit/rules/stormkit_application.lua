@@ -35,6 +35,7 @@ namespace("stormkit", function()
                 target:add("packages", "volk", "vulkan-headers", "vulkan-memory-allocator")
             end
 
+            print("AAAAAAAAAAAAAAAAAA", stormkit_components)
             target:add("packages", "stormkit", { components = table.join("core", "main", stormkit_components) })
         end)
     end)
