@@ -40,6 +40,7 @@ package("stormkit", function()
 
     on_component("core", function(package, component)
         component:add("defines", "ANKERL_UNORDERED_DENSE_STD_MODULE=1", "FROZEN_STD_MODULE=1")
+        component:add("links", "core" .. suffix)
         package:add("deps", "frozen", {
             system = false,
             configs = {
@@ -126,6 +127,13 @@ package("stormkit", function()
                 "libxkbcommon"
             )
         end
+    end)
+
+    on_component(function(package, component)
+        local suffix = (not package:get_config("shared") and "-static" or "")
+            .. (package:get_config("debug") and "-debug" or "")
+
+        component:add("links", component:name() .. suffix)
     end)
 
     on_load(function(package)
