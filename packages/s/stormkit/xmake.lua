@@ -39,8 +39,8 @@ package("stormkit", function()
     add_linkdirs("lib")
 
     on_component("core", function(package, component)
-        local suffix = (not package:get_config("shared") and "-static" or "")
-            .. (package:get_config("debug") and "-debug" or "")
+        local suffix = (not package:config("shared") and "-static" or "")
+            .. (package:config("debug") and "-debug" or "")
         component:add("links", "core" .. suffix)
 
         component:add("defines", "ANKERL_UNORDERED_DENSE_STD_MODULE=1", "FROZEN_STD_MODULE=1")
@@ -70,32 +70,32 @@ package("stormkit", function()
     end)
 
     on_component("main", function(package, component)
-        local suffix = (not package:get_config("shared") and "-static" or "")
-            .. (package:get_config("debug") and "-debug" or "")
+        local suffix = (not package:config("shared") and "-static" or "")
+            .. (package:config("debug") and "-debug" or "")
         component:add("links", "main" .. suffix)
 
         component:add("deps", "core")
     end)
 
     on_component("log", function(package, component)
-        local suffix = (not package:get_config("shared") and "-static" or "")
-            .. (package:get_config("debug") and "-debug" or "")
+        local suffix = (not package:config("shared") and "-static" or "")
+            .. (package:config("debug") and "-debug" or "")
         component:add("links", "log" .. suffix)
 
         component:add("deps", "core")
     end)
 
     on_component("entities", function(package, component)
-        local suffix = (not package:get_config("shared") and "-static" or "")
-            .. (package:get_config("debug") and "-debug" or "")
+        local suffix = (not package:config("shared") and "-static" or "")
+            .. (package:config("debug") and "-debug" or "")
         component:add("links", "entities" .. suffix)
 
         component:add("deps", "core")
     end)
 
     on_component("lua", function(package, component)
-        local suffix = (not package:get_config("shared") and "-static" or "")
-            .. (package:get_config("debug") and "-debug" or "")
+        local suffix = (not package:config("shared") and "-static" or "")
+            .. (package:config("debug") and "-debug" or "")
         component:add("links", "lua" .. suffix)
 
         component:add("deps", "core")
@@ -117,8 +117,8 @@ package("stormkit", function()
     end)
 
     on_component("image", function(package, component)
-        local suffix = (not package:get_config("shared") and "-static" or "")
-            .. (package:get_config("debug") and "-debug" or "")
+        local suffix = (not package:config("shared") and "-static" or "")
+            .. (package:config("debug") and "-debug" or "")
         component:add("links", "image" .. suffix)
 
         component:add("deps", "core")
@@ -127,8 +127,8 @@ package("stormkit", function()
     end)
 
     on_component("gpu", function(package, component)
-        local suffix = (not package:get_config("shared") and "-static" or "")
-            .. (package:get_config("debug") and "-debug" or "")
+        local suffix = (not package:config("shared") and "-static" or "")
+            .. (package:config("debug") and "-debug" or "")
         component:add("links", "gpu" .. suffix)
 
         component:add("deps", "core", "log", "wsi", "image")
@@ -149,8 +149,8 @@ package("stormkit", function()
     end)
 
     on_component("wsi", function(package, component)
-        local suffix = (not package:get_config("shared") and "-static" or "")
-            .. (package:get_config("debug") and "-debug" or "")
+        local suffix = (not package:config("shared") and "-static" or "")
+            .. (package:config("debug") and "-debug" or "")
         component:add("links", "wsi" .. suffix)
 
         component:add("deps", "core")
@@ -169,12 +169,6 @@ package("stormkit", function()
                 "libxkbcommon"
             )
         end
-    end)
-
-    on_component(function(package, component)
-        local suffix = (not package:get_config("shared") and "-static" or "")
-            .. (package:get_config("debug") and "-debug" or "")
-        component:add("links", component:name() .. suffix)
     end)
 
     on_load(function(package)
