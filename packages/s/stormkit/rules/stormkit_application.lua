@@ -1,16 +1,3 @@
-function add_stormkit_requires()
-    add_requires("frozen", {
-        system = false,
-
-        system = false,
-        configs = {
-            modules = true,
-            std_import = true,
-            cpp = "latest",
-        },
-    })
-end
-
 namespace("stormkit", function()
     rule("application", function()
         add_deps("@flags")
