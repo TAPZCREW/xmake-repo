@@ -1,7 +1,7 @@
 package("stormkit", function()
     set_homepage("https://gitlab.com/Arthapz/stormkit")
 
-    set_urls("https://github.com/TapzCrew/stormkit.git")
+    set_urls("https://github.com/Arthapz/stormkit.git")
     set_kind("library")
 
     set_policy("package.strict_compatibility", true)
@@ -32,6 +32,7 @@ package("stormkit", function()
     add_versions("20251106", "617c7f5c6f69d1822c97dc8442e5eb0032437eda")
     add_versions("20251107", "76d1a6e28d5328e3c8b1b12be5379986e840709b")
     add_versions("20251115", "15a641ba541188f3621de33ad94f9e44fd95e071")
+    add_versions("20260206", "bb0d8fa7bb4715a23cc1ee467befa870b7f7bdf3")
 
     add_bindirs("bin")
     add_includedirs("include")
