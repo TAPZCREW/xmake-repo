@@ -1,49 +1,54 @@
-rule("application", function()
-    add_deps("@flags")
+function add_stormkit_requires()
+    add_requires("frozen", {
+        system = false,
 
-    on_config(function(target)
-        import("core.base.hashset")
+        system = false,
+        configs = {
+            modules = true,
+            std_import = true,
+            cpp = "latest",
+        },
+    })
+end
 
-        local stormkit_components = target:values("stormkit.components") or {}
-        local stormkit_components_set = hashset.from(stormkit_components)
+namespace("stormkit", function()
+    rule("application", function()
+        add_deps("@flags")
 
-        target:set("kind", "binary")
-        target:set("languages", "cxxlatest", "clatest")
+        on_config(function(target)
+            import("core.base.hashset")
 
-        -- core --
-        add_requires("frozen", {
-            system = false,
+            local stormkit_components = target:values("stormkit.components") or {}
+            local stormkit_components_set = hashset.from(stormkit_components)
 
-            system = false,
-            configs = {
-                modules = true,
-                std_import = true,
-                cpp = "latest",
-            },
-        })
-        target:add("packages", "frozen", "unordered_dense", "tl_function_ref")
+            target:set("kind", "binary")
+            target:set("languages", "cxxlatest", "clatest")
 
-        if stormkit_components_set:has("image") then target:add("packages", "libktx", "libpng", "libjpeg-turbo") end
-        if stormkit_components_set:has("wsi") then
-            if target:is_plat("linux") then
-                target:add(
-                    "packages",
-                    "libxcb",
-                    "xcb-util-keysyms",
-                    "xcb-util",
-                    "xcb-util-image",
-                    "xcb-util-wm",
-                    "xcb-util-errors",
-                    "wayland",
-                    "wayland-protocols",
-                    "libxkbcommon"
-                )
+            -- core --
+            target:add("packages", "frozen", "unordered_dense", "tl_function_ref")
+
+            if stormkit_components_set:has("image") then target:add("packages", "libktx", "libpng", "libjpeg-turbo") end
+            if stormkit_components_set:has("wsi") then
+                if target:is_plat("linux") then
+                    target:add(
+                        "packages",
+                        "libxcb",
+                        "xcb-util-keysyms",
+                        "xcb-util",
+                        "xcb-util-image",
+                        "xcb-util-wm",
+                        "xcb-util-errors",
+                        "wayland",
+                        "wayland-protocols",
+                        "libxkbcommon"
+                    )
+                end
             end
-        end
-        if stormkit_components_set:has("gpu") then
-            target:add("packages", "volk", "vulkan-headers", "vulkan-memory-allocator")
-        end
+            if stormkit_components_set:has("gpu") then
+                target:add("packages", "volk", "vulkan-headers", "vulkan-memory-allocator")
+            end
 
-        target:add("packages", "stormkit", { components = table.join("core", "main", stormkit_components) })
+            target:add("packages", "stormkit", { components = table.join("core", "main", stormkit_components) })
+        end)
     end)
 end)
