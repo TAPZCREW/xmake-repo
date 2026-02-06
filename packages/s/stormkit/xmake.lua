@@ -4,6 +4,8 @@ package("stormkit", function()
     set_urls("https://github.com/TapzCrew/stormkit.git")
     set_kind("library")
 
+    set_policy("package.strict_compatibility", true)
+
     add_components("core", { default = true, readyonly = true })
     add_components("main", { default = true, readyonly = true })
     add_components("log", { default = false })
