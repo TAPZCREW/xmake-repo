@@ -78,19 +78,23 @@ package("stormkit", function()
     end)
 
     on_component("log", function(package, component)
-        local suffix = (not package:config("shared") and "-static" or "")
-            .. (package:config("debug") and "-debug" or "")
-        component:add("links", "log" .. suffix)
+        if package:config("log") then
+            local suffix = (not package:config("shared") and "-static" or "")
+                .. (package:config("debug") and "-debug" or "")
+            component:add("links", "log" .. suffix)
 
-        component:add("deps", "core")
+            component:add("deps", "core")
+        end
     end)
 
     on_component("entities", function(package, component)
-        local suffix = (not package:config("shared") and "-static" or "")
-            .. (package:config("debug") and "-debug" or "")
-        component:add("links", "entities" .. suffix)
+        if package:config("entities") then
+            local suffix = (not package:config("shared") and "-static" or "")
+                .. (package:config("debug") and "-debug" or "")
+            component:add("links", "entities" .. suffix)
 
-        component:add("deps", "core")
+            component:add("deps", "core")
+        end
     end)
 
     on_component("lua", function(package, component)
@@ -119,60 +123,66 @@ package("stormkit", function()
     end)
 
     on_component("image", function(package, component)
-        local suffix = (not package:config("shared") and "-static" or "")
-            .. (package:config("debug") and "-debug" or "")
-        component:add("links", "image" .. suffix)
+        if package:config("image") then
+            local suffix = (not package:config("shared") and "-static" or "")
+                .. (package:config("debug") and "-debug" or "")
+            component:add("links", "image" .. suffix)
 
-        component:add("deps", "core")
+            component:add("deps", "core")
 
-        package:add("deps", "libktx", "libpng", "libjpeg")
+            package:add("deps", "libktx", "libpng", "libjpeg")
+        end
     end)
 
     on_component("gpu", function(package, component)
-        local suffix = (not package:config("shared") and "-static" or "")
-            .. (package:config("debug") and "-debug" or "")
-        component:add("links", "gpu" .. suffix)
+        if package:config("gpu") then
+            local suffix = (not package:config("shared") and "-static" or "")
+                .. (package:config("debug") and "-debug" or "")
+            component:add("links", "gpu" .. suffix)
 
-        component:add("deps", "core", "log", "wsi", "image")
-        component:add("defines", "STORMKIT_GPU_VULKAN")
+            component:add("deps", "core", "log", "wsi", "image")
+            component:add("defines", "STORMKIT_GPU_VULKAN")
 
-        package:add("deps", "volk", { version = "1.4.335" })
-        package:add("deps", "vulkan-headers", {
-            version = "1.4.335",
-            system = false,
-            configs = {
-                modules = false,
-            },
-        })
-        package:add("deps", "vulkan-memory-allocator", {
-            version = "v3.3.0",
-            system = false,
-        })
+            package:add("deps", "volk", { version = "1.4.335" })
+            package:add("deps", "vulkan-headers", {
+                version = "1.4.335",
+                system = false,
+                configs = {
+                    modules = false,
+                },
+            })
+            package:add("deps", "vulkan-memory-allocator", {
+                version = "v3.3.0",
+                system = false,
+            })
+        end
     end)
 
     on_component("wsi", function(package, component)
-        local suffix = (not package:config("shared") and "-static" or "")
-            .. (package:config("debug") and "-debug" or "")
-        component:add("links", "wsi" .. suffix)
+        if package:config("wsi") then
+            local suffix = (not package:config("shared") and "-static" or "")
+                .. (package:config("debug") and "-debug" or "")
+            component:add("links", "wsi" .. suffix)
 
-        component:add("deps", "core")
+            component:add("deps", "core")
 
-        if package:is_plat("linux") then
-            package:add(
-                "deps",
-                "libxcb",
-                "xcb-util-keysyms",
-                "xcb-util",
-                "xcb-util-image",
-                "xcb-util-wm",
-                "xcb-util-errors",
-                "wayland",
-                "wayland-protocols",
-                "libxkbcommon"
-            )
-        elseif package:is_plat("windows") then
-            component:add("syslinks", "User32", "Shell32", "Gdi32", "Shcore", "Gdiplus")
-        elseif package:is_plat("macosx") then
+            if package:is_plat("linux") then
+                package:add(
+                    "deps",
+                    "libxcb",
+                    "xcb-util-keysyms",
+                    "xcb-util",
+                    "xcb-util-image",
+                    "xcb-util-wm",
+                    "xcb-util-errors",
+                    "wayland",
+                    "wayland-protocols",
+                    "libxkbcommon"
+                )
+            elseif package:is_plat("windows") then
+                component:add("syslinks", "User32", "Shell32", "Gdi32", "Shcore", "Gdiplus")
+            elseif package:is_plat("macosx") then
+            end
         end
     end)
 
