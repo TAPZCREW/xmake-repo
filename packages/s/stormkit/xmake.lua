@@ -94,26 +94,28 @@ package("stormkit", function()
     end)
 
     on_component("lua", function(package, component)
-        local suffix = (not package:config("shared") and "-static" or "")
-            .. (package:config("debug") and "-debug" or "")
-        component:add("links", "lua" .. suffix)
+        if package:config("lua") then
+            local suffix = (not package:config("shared") and "-static" or "")
+                .. (package:config("debug") and "-debug" or "")
+            component:add("links", "lua" .. suffix)
 
-        component:add("deps", "core")
-        component:add("defines", "STORMKIT_LUA_BINDING")
+            component:add("deps", "core")
+            component:add("defines", "STORMKIT_LUA_BINDING")
 
-        package:add("deps", "luau", {
-            system = false,
-            version = "master",
-            configs = {
-                shared = false,
-                extern_c = true,
-                build_cli = false,
-            },
-        })
-        package:add("deps", "sol2", {
-            system = false,
-            version = "develop",
-        })
+            package:add("deps", "luau", {
+                system = false,
+                version = "master",
+                configs = {
+                    shared = false,
+                    extern_c = true,
+                    build_cli = false,
+                },
+            })
+            package:add("deps", "sol2", {
+                system = false,
+                version = "develop",
+            })
+        end
     end)
 
     on_component("image", function(package, component)
