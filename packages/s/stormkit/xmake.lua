@@ -33,6 +33,7 @@ package("stormkit", function()
     add_versions("20251107", "76d1a6e28d5328e3c8b1b12be5379986e840709b")
     add_versions("20251115", "15a641ba541188f3621de33ad94f9e44fd95e071")
     add_versions("20260206", "a1559694da2401281e7a5a100d9fad9a2f0ad3e0")
+    add_versions("20260208", "794c969b08cba634926c7bafb02ee7f04a8f3bca")
 
     add_bindirs("bin")
     add_includedirs("include")
