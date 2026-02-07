@@ -11,6 +11,15 @@ package("sol2", function()
     -- )
 
     add_deps("cmake")
+    add_deps("luau", {
+        system = false,
+        version = "master",
+        configs = {
+            shared = false,
+            extern_c = true,
+            build_cli = false,
+        },
+    })
 
     on_install("!wasm", function(package)
         local configs = {
