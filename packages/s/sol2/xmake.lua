@@ -14,6 +14,7 @@ package("sol2", function()
 
     on_install("!wasm", function(package)
         local configs = {
+            "-DSOL2_BUILD_LUA=OFF",
             "-DSOL2_TESTS=OFF",
             "-DSOL2_TESTS_SINGLE=OFF",
             "-DSOL2_TESTS_INTEROP_EXAMPLES=OFF",
