@@ -32,7 +32,7 @@ package("stormkit", function()
     add_versions("20251106", "617c7f5c6f69d1822c97dc8442e5eb0032437eda")
     add_versions("20251107", "76d1a6e28d5328e3c8b1b12be5379986e840709b")
     add_versions("20251115", "15a641ba541188f3621de33ad94f9e44fd95e071")
-    add_versions("20260206", "f521af4b91d92aa0cc8b7ff4b06a3aa5aeae276a")
+    add_versions("20260206", "b800bcbdb919cad337705beb01a698220b8230ff")
 
     add_bindirs("bin")
     add_includedirs("include")
@@ -44,7 +44,6 @@ package("stormkit", function()
         component:add("links", "core" .. suffix)
 
         component:add("defines", "ANKERL_UNORDERED_DENSE_STD_MODULE=1", "FROZEN_STD_MODULE=1")
-        component:add("links", "core" .. suffix)
         package:add("deps", "frozen", {
             system = false,
             configs = {
@@ -126,11 +125,19 @@ package("stormkit", function()
         if package:config("image") then
             local suffix = (not package:config("shared") and "-static" or "")
                 .. (package:config("debug") and "-debug" or "")
+
             component:add("links", "image" .. suffix)
 
             component:add("deps", "core")
 
-            package:add("deps", "libktx", "libpng", "libjpeg")
+            package:add("deps", "libktx", "libpng")
+            package:add("deps", "libjpeg-turbo", is_plat("windows") and {
+                system = false,
+                configs = {
+                    runtimes = "MD",
+                    shared = true,
+                },
+            } or {})
         end
     end)
 
