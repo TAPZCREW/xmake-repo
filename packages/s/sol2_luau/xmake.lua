@@ -13,7 +13,7 @@ package("sol2_luau", function()
     add_deps("cmake")
     add_deps("luau", {
         system = false,
-        version = "upstream",
+        version = "master",
         configs = {
             shared = false,
             extern_c = true,
@@ -23,6 +23,7 @@ package("sol2_luau", function()
 
     on_install("!wasm", function(package)
         local configs = {
+            "-DSOL2_LUA_VERSION=Luau",
             "-DSOL2_BUILD_LUA=OFF",
             "-DSOL2_TESTS=OFF",
             "-DSOL2_TESTS_SINGLE=OFF",
