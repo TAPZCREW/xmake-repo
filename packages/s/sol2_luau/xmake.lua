@@ -1,4 +1,4 @@
-package("sol2", function()
+package("sol2_luau", function()
     set_kind("library", { headeronly = true })
     set_homepage("https://github.com/ThePhD/sol2")
     set_description("A C++ library binding to Lua.")
