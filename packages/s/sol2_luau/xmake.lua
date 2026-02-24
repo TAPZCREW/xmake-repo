@@ -23,7 +23,7 @@ package("sol2_luau", function()
 
     on_install("!wasm", function(package)
         local configs = {
-            "-DSOL2_LUA_VERSION=Luau",
+            "-DSOL2_LUA_VERSION=Luau 0.709",
             "-DSOL2_BUILD_LUA=OFF",
             "-DSOL2_TESTS=OFF",
             "-DSOL2_TESTS_SINGLE=OFF",
