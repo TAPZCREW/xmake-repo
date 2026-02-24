@@ -13,7 +13,7 @@ package("sol2_luau", function()
     add_deps("cmake")
     add_deps("luau", {
         system = false,
-        version = "master",
+        version = "develop",
         configs = {
             shared = false,
             extern_c = true,
