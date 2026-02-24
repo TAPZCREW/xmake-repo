@@ -11,25 +11,17 @@ package("sol2_luau", function()
     -- )
 
     add_deps("cmake")
-    add_deps("luau", {
-        system = false,
-        version = "upstream",
-        configs = {
-            shared = false,
-            extern_c = true,
-            build_cli = false,
-        },
-    })
 
     on_install("!wasm", function(package)
-        local configs = {
-            "-DSOL2_LUA_VERSION=Luau 0.709",
-            "-DSOL2_BUILD_LUA=OFF",
-            "-DSOL2_TESTS=OFF",
-            "-DSOL2_TESTS_SINGLE=OFF",
-            "-DSOL2_TESTS_INTEROP_EXAMPLES=OFF",
-            "-DSOL2_TESTS_DYNAMIC_LOADING_EXAMPLES=OFF",
-        }
-        import("package.tools.cmake").install(package, configs)
+        -- local configs = {
+        --     "-DSOL2_LUA_VERSION=Luau 0.709",
+        --     "-DSOL2_BUILD_LUA=OFF",
+        --     "-DSOL2_TESTS=OFF",
+        --     "-DSOL2_TESTS_SINGLE=OFF",
+        --     "-DSOL2_TESTS_INTEROP_EXAMPLES=OFF",
+        --     "-DSOL2_TESTS_DYNAMIC_LOADING_EXAMPLES=OFF",
+        -- }
+        -- import("package.tools.cmake").install(package, configs)
+        os.cp("include/sol", package:installdir("include"))
     end)
 end)
