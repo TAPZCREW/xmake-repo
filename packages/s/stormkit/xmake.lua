@@ -35,7 +35,7 @@ package("stormkit", function()
     add_versions("20260206", "a1559694da2401281e7a5a100d9fad9a2f0ad3e0")
     add_versions("20260208", "9a5180192045abab69e745d2a697191357387d63")
 
-    add_versions("dev", "ebec00c7799cf2ce2495788cb403c0498e89fec0")
+    add_versions("dev", "d22d5bbfc97873fffbad0cd5a20f453c00355846")
 
     add_bindirs("bin")
     add_includedirs("include")
@@ -100,6 +100,7 @@ package("stormkit", function()
     end)
 
     on_component("lua", function(package, component)
+        local is_libcpp = package:is_plat("linux") and package:has_runtime("c++_shared", "c++_static")
         if package:config("lua") then
             local suffix = (not package:config("shared") and "-static" or "")
                 .. (package:config("debug") and "-debug" or "")
@@ -110,14 +111,17 @@ package("stormkit", function()
 
             package:add("deps", "luau", {
                 system = false,
-                version = "master",
+                version = "upstream",
                 configs = {
                     shared = false,
                     extern_c = true,
                     build_cli = false,
+                    cxxflags = is_libcpp and { "-stdlib=libc++" } or nil,
+                    shflags = is_libcpp and { "-stdlib=libc++" } or nil,
+                    arflags = is_libcpp and { "-stdlib=libc++" } or nil,
                 },
             })
-            package:add("deps", "sol2", {
+            package:add("deps", "sol2_luau", {
                 system = false,
                 version = "develop",
             })
