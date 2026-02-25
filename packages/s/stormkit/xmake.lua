@@ -27,6 +27,8 @@ package("stormkit", function()
 
     add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
+    add_configs("lto", { description = "Enable lto", default = false, type = "boolean" })
+
     add_versions("20251102", "db479e8c916dbec739279cd7fab5db1b7b8acb41")
     add_versions("20251105", "85f6d4997bed98607ffc644c0cb278e4cb4ce8db")
     add_versions("20251106", "617c7f5c6f69d1822c97dc8442e5eb0032437eda")
@@ -223,6 +225,8 @@ package("stormkit", function()
             lua = package:config("lua"),
 
             examples = package:config("examples"),
+
+            lto = package:config("lto"),
         }
 
         import("package.tools.xmake").install(package, configs)
