@@ -190,9 +190,15 @@ package("stormkit", function()
                     "xcb-util-wm",
                     "xcb-util-errors",
                     "wayland",
-                    "wayland-protocols",
-                    "libxkbcommon"
+                    "wayland-protocols"
                 )
+                package:add("deps", "libxkbcommon", {
+                    system = false,
+                    configs = {
+                        wayland = true,
+                        x11 = true,
+                    },
+                })
             elseif package:is_plat("windows") then
                 component:add("syslinks", "User32", "Shell32", "Gdi32", "Shcore", "Gdiplus")
             elseif package:is_plat("macosx") then
