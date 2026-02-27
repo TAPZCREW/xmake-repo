@@ -6,6 +6,7 @@ package("stormkit", function()
 
     set_policy("package.strict_compatibility", true)
 
+    add_components("stormkit", { default = true, readyonly = true })
     add_components("core", { default = true, readyonly = true })
     add_components("main", { default = true, readyonly = true })
     add_components("log", { default = false })
@@ -37,11 +38,13 @@ package("stormkit", function()
     add_versions("20260206", "a1559694da2401281e7a5a100d9fad9a2f0ad3e0")
     add_versions("20260208", "9a5180192045abab69e745d2a697191357387d63")
 
-    add_versions("dev", "d22d5bbfc97873fffbad0cd5a20f453c00355846")
+    add_versions("dev", "6e9055633cd8c35a4ddff587c2b6c144e38899d5")
 
     add_bindirs("bin")
     add_includedirs("include")
     add_linkdirs("lib")
+
+    on_component("stormkit", function(package, component) component:add("links", "stormkit") end)
 
     on_component("core", function(package, component)
         local suffix = (not package:config("shared") and "-static" or "")
