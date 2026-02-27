@@ -49,8 +49,14 @@ package("stormkit", function()
 
         component:add("deps", "core")
         component:add("deps", "main")
-        for _, name in ipairs(package:components()) do
-            if name ~= "stormkit" and name ~= "main" and name ~= "core" and package:config(name) then
+        for name, _ in pairs(package:components()) do
+            if
+                package:has_component(name)
+                and name ~= "stormkit"
+                and name ~= "main"
+                and name ~= "core"
+                and package:config(name)
+            then
                 component:add("deps", name)
             end
         end
@@ -226,7 +232,6 @@ package("stormkit", function()
     end)
 
     on_install(function(package)
-        print("AAAAAAAAAAAAAAAAAA", package:components())
         local configs = {
             kind = package:config("shared") and "shared" or "static",
             mode = package:is_debug() and "debug" or "release",
