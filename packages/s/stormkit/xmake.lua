@@ -44,7 +44,17 @@ package("stormkit", function()
     add_includedirs("include")
     add_linkdirs("lib")
 
-    on_component("stormkit", function(package, component) component:add("links", "stormkit") end)
+    on_component("stormkit", function(package, component)
+        component:add("links", "stormkit")
+
+        component:add("deps", "core")
+        component:add("deps", "main")
+        for _, name in ipairs(package:components()) do
+            if name ~= "stormkit" and name ~= "main" and name ~= "core" and package:config(name) then
+                component:add("deps", name)
+            end
+        end
+    end)
 
     on_component("core", function(package, component)
         local suffix = (not package:config("shared") and "-static" or "")
