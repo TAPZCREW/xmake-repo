@@ -45,18 +45,13 @@ package("stormkit", function()
     add_linkdirs("lib")
 
     on_component("stormkit", function(package, component)
+        print("AAAAAAAAAAAAAAA", package:components())
         component:add("links", "stormkit")
 
         component:add("deps", "core")
         component:add("deps", "main")
         for name, _ in pairs(package:components()) do
-            if
-                package:has_component(name)
-                and name ~= "stormkit"
-                and name ~= "main"
-                and name ~= "core"
-                and package:config(name)
-            then
+            if name ~= "stormkit" and name ~= "main" and name ~= "core" and package:config(name) then
                 component:add("deps", name)
             end
         end
