@@ -226,6 +226,7 @@ package("stormkit", function()
     end)
 
     on_install(function(package)
+        print("AAAAAAAAAAAAAAAAAA", package:components())
         local configs = {
             kind = package:config("shared") and "shared" or "static",
             mode = package:is_debug() and "debug" or "release",
