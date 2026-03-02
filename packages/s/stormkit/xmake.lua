@@ -58,7 +58,7 @@ package("stormkit", function()
     on_component("core", function(package, component)
         local suffix = (not package:config("shared") and "-static" or "")
             .. (package:config("debug") and "-debug" or "")
-        component:add("links", "core" .. suffix)
+        component:add("links", "stormkit-core" .. suffix)
 
         component:add("defines", "ANKERL_UNORDERED_DENSE_STD_MODULE=1", "FROZEN_STD_MODULE=1")
         package:add("deps", "frozen", {
@@ -88,7 +88,7 @@ package("stormkit", function()
     on_component("main", function(package, component)
         local suffix = (not package:config("shared") and "-static" or "")
             .. (package:config("debug") and "-debug" or "")
-        component:add("links", "main" .. suffix)
+        component:add("links", "stormkit-main" .. suffix)
 
         component:add("deps", "core")
     end)
@@ -97,7 +97,7 @@ package("stormkit", function()
         if package:config("log") then
             local suffix = (not package:config("shared") and "-static" or "")
                 .. (package:config("debug") and "-debug" or "")
-            component:add("links", "log" .. suffix)
+            component:add("links", "stormkit-log" .. suffix)
 
             component:add("deps", "core")
         end
@@ -107,7 +107,7 @@ package("stormkit", function()
         if package:config("entities") then
             local suffix = (not package:config("shared") and "-static" or "")
                 .. (package:config("debug") and "-debug" or "")
-            component:add("links", "entities" .. suffix)
+            component:add("links", "stormkit-entities" .. suffix)
 
             component:add("deps", "core")
         end
@@ -118,7 +118,7 @@ package("stormkit", function()
         if package:config("lua") then
             local suffix = (not package:config("shared") and "-static" or "")
                 .. (package:config("debug") and "-debug" or "")
-            component:add("links", "lua" .. suffix)
+            component:add("links", "stormkit-lua" .. suffix)
 
             component:add("deps", "core")
             component:add("defines", "STORMKIT_LUA_BINDING")
@@ -147,7 +147,7 @@ package("stormkit", function()
             local suffix = (not package:config("shared") and "-static" or "")
                 .. (package:config("debug") and "-debug" or "")
 
-            component:add("links", "image" .. suffix)
+            component:add("links", "stormkit-image" .. suffix)
 
             component:add("deps", "core")
 
@@ -166,7 +166,7 @@ package("stormkit", function()
         if package:config("gpu") then
             local suffix = (not package:config("shared") and "-static" or "")
                 .. (package:config("debug") and "-debug" or "")
-            component:add("links", "gpu" .. suffix)
+            component:add("links", "stormkit-gpu" .. suffix)
 
             component:add("deps", "core", "log", "wsi", "image")
             component:add("defines", "STORMKIT_GPU_VULKAN")
@@ -190,7 +190,7 @@ package("stormkit", function()
         if package:config("wsi") then
             local suffix = (not package:config("shared") and "-static" or "")
                 .. (package:config("debug") and "-debug" or "")
-            component:add("links", "wsi" .. suffix)
+            component:add("links", "stormkit-wsi" .. suffix)
 
             component:add("deps", "core")
 

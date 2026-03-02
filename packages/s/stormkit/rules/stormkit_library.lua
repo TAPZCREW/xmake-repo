@@ -32,6 +32,10 @@ namespace("stormkit", function()
                 target:add("packages", "volk", "vulkan-headers", "vulkan-memory-allocator")
             end
 
+            for _, name in ipairs(stormkit_components) do
+                target:add("defines", "STORMKIT_IMPORT_" .. string.upper(name), { public = true })
+            end
+
             target:add("packages", "stormkit", { components = table.join("core", stormkit_components) })
         end)
     end)
