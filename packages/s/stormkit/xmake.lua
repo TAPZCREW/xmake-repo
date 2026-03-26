@@ -76,13 +76,19 @@ package("stormkit", function()
                 std_import = true,
             },
         })
-        package:add("deps", "tl_function_ref", {
-            system = false,
-            configs = {
-                modules = true,
-                std_import = true,
-            },
-        })
+
+        print("AAAAAAAAAAAA", package:version())
+        if package:version() == "dev" then
+            package:add("deps", "nontype_functional")
+        else
+            package:add("deps", "tl_function_ref", {
+                system = false,
+                configs = {
+                    modules = true,
+                    std_import = true,
+                },
+            })
+        end
     end)
 
     on_component("main", function(package, component)
