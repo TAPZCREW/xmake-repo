@@ -77,7 +77,7 @@ package("stormkit", function()
             },
         })
 
-        if package:version():ge("20260209") then
+        if not package:version() or package:version():ge("20260209") then
             print("AAAAAAAAAAAA", package:version())
             package:add("deps", "nontype_functional")
         else
