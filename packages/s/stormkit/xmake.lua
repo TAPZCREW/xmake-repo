@@ -38,7 +38,7 @@ package("stormkit", function()
     add_versions("20260206", "a1559694da2401281e7a5a100d9fad9a2f0ad3e0")
     add_versions("20260208", "9a5180192045abab69e745d2a697191357387d63")
 
-    add_versions("dev", "eed73a5677a865f386e08c231fddc18be108239d")
+    add_versions("dev", "be729ed0de7cc0835ce14d0c43df7bddc10da177")
 
     add_bindirs("bin")
     add_includedirs("include")
@@ -77,10 +77,11 @@ package("stormkit", function()
             },
         })
 
-        print("AAAAAAAAAAAA", package:version())
-        if package:version() == "dev" then
+        if package:version():ge("20260209") then
+            print("AAAAAAAAAAAA", package:version())
             package:add("deps", "nontype_functional")
         else
+            print("BBBBBBBBB", package:version())
             package:add("deps", "tl_function_ref", {
                 system = false,
                 configs = {
