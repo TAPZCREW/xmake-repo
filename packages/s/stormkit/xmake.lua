@@ -78,10 +78,8 @@ package("stormkit", function()
         })
 
         if not package:version() or package:version():ge("20260209") then
-            print("AAAAAAAAAAAA", package:version())
             package:add("deps", "nontype_functional")
         else
-            print("BBBBBBBBB", package:version())
             package:add("deps", "tl_function_ref", {
                 system = false,
                 configs = {
