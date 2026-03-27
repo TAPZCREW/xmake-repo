@@ -9,7 +9,7 @@ package("nontype_functional", function()
         "https://github.com/arthapz/nontype_functional.git"
     )
 
-    add_version("20260327", "85ba1c9591c0fd7625128363e058d919ef0b6745")
+    add_versions("20260327", "9ba0b2727c2969391fb1ffba878a072b928d86ec")
     -- add_versions("v1.0.2", "0fa53530d813b97c6f87615d4c2e3f0ded1a95e337f797059a4b201e96bf5a4f")
 
     on_install(function(package)
