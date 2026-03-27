@@ -11,6 +11,7 @@ package("nontype_functional", function()
 
     add_versions("20260327", "9ba0b2727c2969391fb1ffba878a072b928d86ec")
     -- add_versions("v1.0.2", "0fa53530d813b97c6f87615d4c2e3f0ded1a95e337f797059a4b201e96bf5a4f")
+    add_defines("NONTYPE_FUNCTIONAL_MODULE")
 
     on_install(function(package)
         local configs = { modules = true }
