@@ -38,7 +38,7 @@ package("stormkit", function()
     add_versions("20260206", "a1559694da2401281e7a5a100d9fad9a2f0ad3e0")
     add_versions("20260208", "9a5180192045abab69e745d2a697191357387d63")
 
-    add_versions("dev", "21c2f7d7d0b8aedaa0bd3100cdae429671203743")
+    add_versions("dev", "3be75126700fd333e2a7b7f65f5125aef5af8666")
 
     add_bindirs("bin")
     add_includedirs("include")
@@ -76,13 +76,18 @@ package("stormkit", function()
                 std_import = true,
             },
         })
-        package:add("deps", "tl_function_ref", {
-            system = false,
-            configs = {
-                modules = true,
-                std_import = true,
-            },
-        })
+
+        if not package:version() or package:version():ge("20260209") then
+            package:add("deps", "nontype_functional")
+        else
+            package:add("deps", "nontype_functional", {
+                system = false,
+                configs = {
+                    modules = true,
+                    std_import = true,
+                },
+            })
+        end
     end)
 
     on_component("main", function(package, component)
