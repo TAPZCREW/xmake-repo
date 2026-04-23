@@ -78,9 +78,9 @@ package("stormkit", function()
         })
 
         if not package:version() or package:version():ge("20260209") then
-            package:add("deps", "nontype_functional")
+            package:add("deps", "nontype_functional main")
         else
-            package:add("deps", "nontype_functional", {
+            package:add("deps", "tl_function_ref", {
                 system = false,
                 configs = {
                     modules = true,
