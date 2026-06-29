@@ -1,53 +1,54 @@
 namespace("stormkit", function()
     rule("flags", function()
-        on_config(function(target)
-            import("core.tool.compiler")
-
-            if target:is_plat("windows") then
-                local rad_enabled = false
-                if get_config("rad") and is_subhost("windows") then
-                    rad_enabled = true
-                    target:add("ldflags", "-fuse-ld=radlink", { force = true })
-                    target:add("shflags", "-fuse-ld=radlink", { force = true })
-                end
-
-                if get_config("sanitizers") and is_mode("release", "releasedbg") and target:is_binary() then
-                    if get_config("toolchain") == "llvm" or get_config("toolchain") == "clang" then
-                        if get_config("runtimes") == "c++_shared" or get_config("runtimes") == "c++_static" then
-                            target:set("policy", "build.sanitizer.address", true)
-                            target:set("policy", "build.sanitizer.undefined", true)
-                        end
-                    end
-                end
-            elseif target:is_plat("linux", "mingw", "macosx", "ios", "android") then
-                if get_config("lto") then
-                    target:set("policy", "build.optimization.lto", true)
-                    if get_config("toolchain") == "llvm" or get_config("toolchain") == "clang" then
-                        target:add("ldflags", "-flto=thin", { force = true })
-                        target:add("shflags", "-flto=thin", { force = true })
-                    end
-                end
-                if get_config("mold") and not is_subhost("windows") then
-                    local arg = "-fuse-ld=mold"
-                    if type(get_config("mold")) == "string" then arg = "-fuse-ld=" .. get_config("mold") end
-                    target:add("ldflags", arg, { force = true })
-                    target:add("shflags", arg, { force = true })
-                end
-                target:set("utf-8", true)
-
-                if get_config("sanitizers") and is_mode("debug", "release", "releasedbg") and target:is_binary() then
-                    target:set("policy", "build.sanitizer.address", true)
-                    target:set("policy", "build.sanitizer.undefined", true)
-                end
-                if
-                    get_config("toolchain") == "llvm"
-                    or get_config("toolchain") == "clang"
-                    or get_config("toolchain") == "gcc"
-                then
-                    target:add("syslinks", "dl")
+        on_config("linux", "mingw", "macosx", "ios", "android", function(target)
+            if get_config("lto") then
+                target:set("policy", "build.optimization.lto", true)
+                if get_config("toolchain") == "llvm" or get_config("toolchain") == "clang" then
+                    target:add("ldflags", "-flto=thin", { force = true })
+                    target:add("shflags", "-flto=thin", { force = true })
                 end
             end
+            if get_config("mold") and not is_subhost("windows") then
+                local arg = "-fuse-ld=mold"
+                if type(get_config("mold")) == "string" then arg = "-fuse-ld=" .. get_config("mold") end
+                target:add("ldflags", arg, { force = true })
+                target:add("shflags", arg, { force = true })
+            end
+            target:set("utf-8", true)
 
+            if get_config("sanitizers") and is_mode("debug", "release", "releasedbg") and target:is_binary() then
+                target:set("policy", "build.sanitizer.address", true)
+                target:set("policy", "build.sanitizer.undefined", true)
+            end
+            if
+                get_config("toolchain") == "llvm"
+                or get_config("toolchain") == "clang"
+                or get_config("toolchain") == "gcc"
+            then
+                target:add("syslinks", "dl")
+            end
+        end)
+        on_config("windows", function(target)
+            import("core.tool.compiler")
+            local rad_enabled = false
+            if get_config("rad") and is_subhost("windows") then
+                rad_enabled = true
+                target:add("ldflags", "-fuse-ld=radlink", { force = true })
+                target:add("shflags", "-fuse-ld=radlink", { force = true })
+            end
+            target:add("cxflags", "clang::-fms-compatibility")
+            target:add("defines", "_CRT_STDIO_ISO_WIDE_SPECIFIERS=1")
+
+            if get_config("sanitizers") and is_mode("release", "releasedbg") and target:is_binary() then
+                if get_config("toolchain") == "llvm" or get_config("toolchain") == "clang" then
+                    if get_config("runtimes") == "c++_shared" or get_config("runtimes") == "c++_static" then
+                        target:set("policy", "build.sanitizer.address", true)
+                        target:set("policy", "build.sanitizer.undefined", true)
+                    end
+                end
+            end
+        end)
+        on_config(function(target)
             if get_config("devmode") then
                 target:set("warnings", "allextra", "pedantic")
             else
@@ -129,9 +130,11 @@ namespace("stormkit", function()
                             "-fstack-clash-protection",
                             "-ftrivial-auto-var-init=zero",
                         },
-                        is_plat("linux") and {
-                                "-fcf-protection=full",
-                            } or {},
+                        is_plat("linux")
+                                and {
+                                    "-fcf-protection=full",
+                                }
+                            or {},
                         is_mode("debug", "releasedbg")
                                 and { "-ggdb3", "-fno-omit-frame-pointer", "-fno-sanitize-merge" }
                             or {},

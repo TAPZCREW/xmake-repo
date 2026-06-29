@@ -9,7 +9,7 @@ namespace("stormkit", function()
             local stormkit_components_set = hashset.from(stormkit_components)
 
             -- core --
-            target:add("packages", "frozen", "unordered_dense", "nontype_funtional")
+            target:add("packages", "frozen", "unordered_dense", "nontype_functional")
 
             if stormkit_components_set:has("image") then target:add("packages", "libktx", "libpng", "libjpeg-turbo") end
             if stormkit_components_set:has("wsi") then
@@ -30,10 +30,6 @@ namespace("stormkit", function()
             end
             if stormkit_components_set:has("gpu") then
                 target:add("packages", "volk", "vulkan-headers", "vulkan-memory-allocator")
-            end
-
-            for _, name in ipairs(stormkit_components) do
-                target:add("defines", "STORMKIT_IMPORT_" .. string.upper(name), { public = true })
             end
 
             target:add("packages", "stormkit", { components = table.join("core", stormkit_components) })
