@@ -10,6 +10,7 @@ package("stormkit", function()
     add_components("core", { default = true, readyonly = true })
     add_components("main", { default = true, readyonly = true })
     add_components("log", { default = false })
+    add_components("math", { default = false })
     add_components("wsi", { default = false })
     add_components("entities", { default = false })
     add_components("image", { default = false })
@@ -19,12 +20,13 @@ package("stormkit", function()
     add_configs("core", { description = "Enable core module", default = true, type = "boolean", readyonly = true })
     add_configs("assertion", { description = "Enable assertions", default = true, type = "boolean" })
 
-    add_configs("log", { description = "Build log module", default = true, type = "boolean" })
-    add_configs("wsi", { description = "Build wsi module", default = true, type = "boolean" })
-    add_configs("entities", { description = "Build entities module", default = true, type = "boolean" })
-    add_configs("image", { description = "Build image module", default = true, type = "boolean" })
-    add_configs("gpu", { description = "Build gpu module", default = true, type = "boolean" })
-    add_configs("lua", { description = "Build lua module", default = true, type = "boolean" })
+    add_configs("log", { description = "Build log module", default = false, type = "boolean" })
+    add_configs("math", { description = "Build math module", default = false, type = "boolean" })
+    add_configs("wsi", { description = "Build wsi module", default = false, type = "boolean" })
+    add_configs("entities", { description = "Build entities module", default = false, type = "boolean" })
+    add_configs("image", { description = "Build image module", default = false, type = "boolean" })
+    add_configs("gpu", { description = "Build gpu module", default = false, type = "boolean" })
+    add_configs("lua", { description = "Build lua module", default = false, type = "boolean" })
 
     add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
@@ -88,6 +90,14 @@ package("stormkit", function()
                 },
             })
         end
+    end)
+
+    on_component("math", function(package, component)
+        local suffix = (not package:config("shared") and "-static" or "")
+            .. (package:config("debug") and "-debug" or "")
+        component:add("links", "stormkit-math" .. suffix)
+
+        component:add("deps", "core")
     end)
 
     on_component("main", function(package, component)
