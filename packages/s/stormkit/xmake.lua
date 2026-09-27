@@ -238,11 +238,7 @@ package("stormkit", function()
     on_load(function(package)
         if not package:config("shared") then package:add("defines", "STORMKIT_STATIC") end
 
-        if
-            package:is_plat("windows")
-            and package:toolchain() == "llvm"
-            and not package:has_runtimes("c++_shared", "c++_static")
-        then
+        if package:is_plat("windows") and not package:has_runtime("c++_shared", "c++_static") then
             package:add("deps", "beman_optional")
         end
     end)
