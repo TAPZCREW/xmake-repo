@@ -17,7 +17,6 @@ package("stormkit", function()
     add_components("entities", { default = false })
     add_components("image", { default = false })
     add_components("gpu", { default = false })
-    add_components("lua", { default = false })
 
     add_configs("core", { description = "Enable core module", default = true, type = "boolean", readyonly = true })
     add_configs("assertion", { description = "Enable assertions", default = true, type = "boolean" })
@@ -28,7 +27,6 @@ package("stormkit", function()
     add_configs("entities", { description = "Build entities module", default = false, type = "boolean" })
     add_configs("image", { description = "Build image module", default = true, type = "boolean" })
     add_configs("gpu", { description = "Build gpu module", default = false, type = "boolean" })
-    add_configs("lua", { description = "Build lua module", default = false, type = "boolean" })
 
     add_configs("examples", { description = "Build examples", default = false, type = "boolean" })
 
@@ -130,35 +128,6 @@ package("stormkit", function()
         end
     end)
 
-    on_component("lua", function(package, component)
-        local is_libcpp = package:is_plat("linux") and package:has_runtime("c++_shared", "c++_static")
-        if package:config("lua") then
-            local suffix = (not package:config("shared") and "-static" or "")
-                .. (package:config("debug") and "-debug" or "")
-            component:add("links", "stormkit-lua" .. suffix)
-
-            component:add("deps", "core")
-            component:add("defines", "STORMKIT_LUA_BINDING")
-
-            package:add("deps", "luau", {
-                system = false,
-                version = "upstream",
-                configs = {
-                    shared = false,
-                    extern_c = true,
-                    build_cli = false,
-                    cxxflags = is_libcpp and { "-stdlib=libc++" } or nil,
-                    shflags = is_libcpp and { "-stdlib=libc++" } or nil,
-                    arflags = is_libcpp and { "-stdlib=libc++" } or nil,
-                },
-            })
-            package:add("deps", "sol2_luau", {
-                system = false,
-                version = "develop",
-            })
-        end
-    end)
-
     on_component("image", function(package, component)
         if package:config("image") then
             local suffix = (not package:config("shared") and "-static" or "")
@@ -255,7 +224,6 @@ package("stormkit", function()
             entities = package:config("entities"),
             image = package:config("image"),
             gpu = package:config("gpu"),
-            lua = package:config("lua"),
 
             examples = package:config("examples"),
 
