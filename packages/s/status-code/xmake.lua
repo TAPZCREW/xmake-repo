@@ -1,6 +1,6 @@
 package("status-code", function()
     set_kind("library", { headeronly = true })
-    set_homepage("https://github.com/ned14/status-code")
+    set_homepage("https://github.com/arthapz/status-code")
     set_description("Proposed SG14 status_code for the C++ standard")
     set_license("Apache-2.0")
 
